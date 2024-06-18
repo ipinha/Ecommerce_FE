@@ -2,6 +2,8 @@
 import ProductItem from '../components/ProductItem.vue'
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import router from '@/router';
+
 
 const productData = ref({});
 onMounted(async () => {
@@ -15,12 +17,18 @@ onMounted(async () => {
   }
 });
 
+
+
+const handleSelect = (product) => {
+  router.push(`/product/show/${product.product_id}`);
+};
+
 </script>
 
 <template>
 <div class="home_container">
   <div class="list_product">
-    <ProductItem class="product_item" v-for="product in productData" :key="product.id" :product="product" />
+    <ProductItem class="product_item" v-for="product in productData" :key="product.id" :product="product" @select="handleSelect" />
   </div>
 </div>
 </template>

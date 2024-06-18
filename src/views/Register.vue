@@ -53,10 +53,8 @@
           console.log('User registered successfully:', response.data);
 
           router.push('/login');
-          // Redirect to login or another page if needed
         } catch (error) {
           console.error('Error registering user:', error);
-          // Handle error (e.g., show error message)
         }
       }
     }

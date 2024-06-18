@@ -1,51 +1,52 @@
 <script setup>
-  import { RouterLink } from 'vue-router';
-  import { computed,watchEffect, ref, onMounted, watch } from 'vue';
+  import { ref, onMounted, watch } from 'vue';
   import { useRouter } from 'vue-router';
   import axios from 'axios';
-  
-  const router = useRouter();
-  const AdminIS = ref(false);
-  const isLoggedIn = ref(false)
 
+  const router = useRouter();
+  const isLoggedIn = ref(false);
+  const isAdmin = ref(false);
 
   const logout = () => {
     localStorage.removeItem('access_token');
     router.push('/login');
     isLoggedIn.value = false;
-    AdminIS.value = false;
-
+    isAdmin.value = false;
   };
 
   const login = async () => {
-  try {
-    const token = localStorage.getItem('access_token');
-    const userResponse = await axios.get('http://127.0.0.1:8000/user/role', {
-      headers: {
-        Authorization: `Bearer ${token}`
+    try {
+      const token = localStorage.getItem('access_token');
+      
+      if (!token) {
+        isLoggedIn.value = false;
+        isAdmin.value = false;
+        return;
       }
-    });
-    isLoggedIn.value = true;
-    const isAdmin = userResponse.data.isAdmin === 'True' ? true : false;
-    if (isAdmin) {
-      AdminIS.value = true
+      
+      const userResponse = await axios.get('http://127.0.0.1:8000/user/role', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      isLoggedIn.value = true;
+      isAdmin.value = userResponse.data.isAdmin === 'True';
+    } catch (error) {
+      console.error('Login error:', error.message);
+      isLoggedIn.value = false;
+      isAdmin.value = false;
     }
-    console.log(isAdmin);
-    
-  } catch (error) {
-    console.error('Login error:', error.message);
-  }
-};
+  };
+
+
+  onMounted(login);
 
 
 
-
-window.addEventListener('login-succes', (event) => {
-  isLoggedIn.value= true
-  login()
-})
-
-
+  window.addEventListener('login-success', () => {
+    login(); 
+  });
 </script>
 
 <template>
@@ -54,12 +55,11 @@ window.addEventListener('login-succes', (event) => {
       <router-link to="/" class="link">DIAMOND</router-link>
     </div>
 
-
     <div class="right-container">
-      <router-link v-if="AdminIS" to="/admin" class="link">Admin</router-link>
+      <router-link v-if="isAdmin" to="/admin" class="link">Admin</router-link>
+      <router-link to="/cart" class="link">Cart</router-link>
       <div class="btnlogin">
-        
-        <p v-if="isLoggedIn"  @click="logout"  class="link">Logout</p>
+        <p v-if="isLoggedIn" @click="logout" class="link">Logout</p>
         <router-link v-else to="/login" class="link">Login</router-link>
       </div>
     </div>
@@ -83,32 +83,22 @@ window.addEventListener('login-succes', (event) => {
     color: white;
   }
 
-  .center-container {
-    color: white;
-  }
-
   .right-container {
     display: flex;
     margin-right: 5%;
-    text-decoration: none;
-  }
-
-  .btnSignup {
-    margin-left: 10%;
   }
 
   .link {
     text-decoration: none;
     color: white;
-    margin-left: 20%;
+    margin-left: 20px;
   }
 
   .btnlogin {
     display: inline-block;
   }
 
-  .btnlogin:hover,
-  .btnSignup:hover {
+  .btnlogin:hover {
     cursor: pointer;
   }
 </style>
