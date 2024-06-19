@@ -112,6 +112,7 @@ const remove = async () => {
   background-color: rgb(25, 34, 110);
   border: none;
   color: #fff;
+  cursor: pointer;
 }
 .image img {
   max-width: 100%;
