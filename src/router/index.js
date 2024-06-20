@@ -8,6 +8,9 @@ import Product from '@/views/Managers/Product.vue'
 import ProductDetail from '@/components/ProductDetail.vue'
 import Cart from '@/views/Cart.vue'
 import Order from '@/views/Order.vue'
+import OrderHistory from '@/views/OrderHistory.vue'
+import OrderItem from '@/components/OrderItem.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,7 +59,19 @@ const router = createRouter({
       path:'/order',
       name:'order',
       component:Order
+    },
+    {
+      path:'/orderhistory',
+      name:'orderhistory',
+      component:OrderHistory
+    },
+    {
+      path: '/order/details/:orderId',
+      name: 'orderitem',
+      component: OrderItem,
     }
+
+
   ]
 })
 

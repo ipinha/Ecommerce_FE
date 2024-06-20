@@ -114,8 +114,11 @@ fetchProduct(); // Gọi hàm fetchProduct khi component được mount
   width: 15%;
 }
 
-.price, .quantity, .total {
+.price, .quantity {
   width: 5%;
+}
+.total{
+  width: 8%;
 }
 
 .btn {

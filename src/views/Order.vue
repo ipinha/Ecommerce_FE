@@ -21,7 +21,11 @@
   
     <div class="footer">
       <div class="total">
-        Tổng Tiền: {{ formatCurrency(total.value) }}
+        Tổng Tiền: {{ formatCurrency(total) }}
+      </div>
+      <div class="form-group">
+        <label for="names">Name:</label>
+        <input type="text" id="name" v-model="name" placeholder="Enter your name">
       </div>
       <div class="form-group">
         <label for="phone">Phone:</label>
@@ -60,6 +64,7 @@ import Swal from 'sweetalert2';
   const total = ref(0);
   const phone = ref('');
   const address = ref('');
+  const name = ref('')
   const confirmOrder = ref(false); // State to manage confirmation modal
   
   onMounted(async () => {
@@ -112,6 +117,7 @@ import Swal from 'sweetalert2';
     const orderData = {
       total: total.value,
       status: "Pending",
+      name:name.value,
       phone: phone.value,
       address: address.value,
       order_items: carts.value.map(cart => ({
@@ -131,7 +137,7 @@ import Swal from 'sweetalert2';
       icon: 'success',
       text: 'Category added successfully!'
     }).then(() => {
-      router.push('/')
+      router.push('/orderhistory')
     });
       console.log('Order placed successfully:', response.data);
     } catch (error) {

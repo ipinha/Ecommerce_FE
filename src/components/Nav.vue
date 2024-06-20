@@ -58,6 +58,7 @@
     <div class="right-container">
       <router-link v-if="isAdmin" to="/admin" class="link">Admin</router-link>
       <router-link to="/cart" class="link">Cart</router-link>
+      <router-link to="/orderhistory" class="link">Order</router-link>
       <div class="btnlogin">
         <p v-if="isLoggedIn" @click="logout" class="link">Logout</p>
         <router-link v-else to="/login" class="link">Login</router-link>
